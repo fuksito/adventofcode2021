@@ -22,10 +22,12 @@ console.log(cards)
 const isAnyLineFullNegative = (card) => some(card, (line) => every(line, x => x < 0))
 const isCardWinning = (card) => isAnyLineFullNegative(card) || isAnyLineFullNegative(unzip(card))
 
+const wonCards = []
+let lastScore = 0
 draws.forEach((draw) => {
   console.log(`DRAW ${draw}`)
   // console.log(cards)
-  cards.forEach((card) => {
+  cards.forEach((card, cardIndex) => {
     // cards.forEach((line, ci) => cards[ci] = line.map(el => el === draw ? -el : el))
     for (let i = 0; i < 5; i++) {
       for (let j = 0; j < 5; j++) {
@@ -36,11 +38,17 @@ draws.forEach((draw) => {
     console.log(card)
     console.log(`WIN: ${isWin ? 'YES' : 'NO'}`)
     if (isWin) {
-      const unmarkedSum = sum(flatten(card).filter(x => x > 0))
-      const result = unmarkedSum * draw
-      console.log(result)
-      process.exit()
+      if (!wonCards.includes(cardIndex)) {
+        const unmarkedSum = sum(flatten(card).filter(x => x > 0))
+        const result = unmarkedSum * draw
+        console.log(result)
+        lastScore = result
+      }
+      // console.log(result)
+      // process.exit()
       // return unmarkedSum * draw
     }
   })
 })
+
+console.log(lastScore)
